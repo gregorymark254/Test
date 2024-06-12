@@ -19,4 +19,11 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_instance = True
-        exclude = ['id']
+        exclude = ['id', "_password"]
+
+
+class UserCreateSchema(UserSchema):
+    password = String(required=True, validate=[validate.Regexp(
+        r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$",
+        error='Password must have all characters'
+    )])

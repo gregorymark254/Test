@@ -1,4 +1,5 @@
 from flask import request, jsonify
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from sqlalchemy import desc
 
@@ -8,6 +9,7 @@ from schemas.user import UserSchema
 
 
 class UserList(Resource):
+    method_decorators = [jwt_required()]
     def get(self):
         name_filter = request.args.get("name")
         age_filter = request.args.get("age")
