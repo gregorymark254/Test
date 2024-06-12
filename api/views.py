@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from flask_cors import cross_origin
 from flask_restful import Api
 from marshmallow import ValidationError
 
@@ -9,6 +10,12 @@ api = Api(blueprint, errors=blueprint.errorhandler)
 
 api.add_resource(UserList, '/users')
 api.add_resource(UserResourse, '/users/<int:user_id>')
+
+
+@blueprint.route('/test-cors')
+@cross_origin()
+def test_cors():
+    return {}
 
 
 @blueprint.errorhandler(ValidationError)

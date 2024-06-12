@@ -1,9 +1,9 @@
 from flask import Flask
-from flask_migrate import Migrate
+
 
 import manage
 from api.views import blueprint
-from extensions import db
+from extensions import db, migrate, cors
 
 app = Flask(__name__)
 app.register_blueprint(blueprint=blueprint)
@@ -11,7 +11,10 @@ app.config.from_object('config')
 app.cli.add_command(manage.user_cli)
 
 db.init_app(app)
-migrate = Migrate(app, db)
+migrate.init_app(app, db)
+cors.init_app(app, resources={r"/api/*": {
+    "origins": ["http://127.0.0.1:5000"]
+}})
 
 
 @app.route('/')
